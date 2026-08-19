@@ -5,7 +5,7 @@ import { categories } from "@/lib/inspectionForms";
 
 export default function UploadDokumenPage() {
   const [form, setForm] = useState({
-    kategori: categories[0],
+    kategori: categories[0], as string
     namaFile: "",
     bulan: String(new Date().getMonth() + 1),
     tahun: String(new Date().getFullYear()),
