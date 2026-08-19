@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import clsx from "clsx";
+import LogoRow from "./LogoRow";
 
 const menu = [
   { href: "/", label: "Dashboard", icon: "📊" },
@@ -51,13 +52,10 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile top bar */}
-      <div className="lg:hidden sticky top-0 z-30 flex items-center justify-between bg-white border-b border-brand-line px-4 py-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">⛏️</span>
-          <div>
-            <p className="font-bold text-sm leading-tight">KPP Mining</p>
-            <p className="text-[10px] text-brand-muted leading-tight">Safety Dashboard</p>
-          </div>
+      <div className="lg:hidden sticky top-0 z-30 flex items-center justify-between bg-white border-b border-brand-line px-4 py-3 gap-2">
+        <div className="flex flex-col gap-1 min-w-0">
+          <LogoRow size="h-6" />
+          <p className="text-[10px] text-brand-muted leading-tight">Safety Dashboard</p>
         </div>
         <button
           aria-label="Buka menu"
@@ -72,9 +70,9 @@ export default function Sidebar() {
       {open && (
         <div className="lg:hidden fixed inset-0 z-40 flex">
           <div className="w-72 bg-white h-full shadow-xl overflow-y-auto">
-            <div className="flex items-center justify-between px-4 py-4 border-b border-brand-line">
-              <p className="font-bold">KPP Mining</p>
-              <button onClick={() => setOpen(false)} className="text-lg">✕</button>
+            <div className="flex items-center justify-between px-4 py-4 border-b border-brand-line gap-2">
+              <LogoRow size="h-7" />
+              <button onClick={() => setOpen(false)} className="text-lg shrink-0">✕</button>
             </div>
             <NavList />
           </div>
@@ -84,12 +82,9 @@ export default function Sidebar() {
 
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex lg:flex-col w-64 shrink-0 border-r border-brand-line bg-white h-screen sticky top-0 overflow-y-auto">
-        <div className="flex items-center gap-2 px-5 py-5 border-b border-brand-line">
-          <span className="text-2xl">⛏️</span>
-          <div>
-            <p className="font-bold leading-tight">KPP Mining</p>
-            <p className="text-xs text-brand-muted leading-tight">Safety Dashboard</p>
-          </div>
+        <div className="flex flex-col gap-2 px-5 py-5 border-b border-brand-line">
+          <LogoRow size="h-8" />
+          <p className="text-xs text-brand-muted leading-tight">Safety Dashboard</p>
         </div>
         <NavList />
       </aside>
