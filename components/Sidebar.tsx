@@ -8,12 +8,10 @@ import LogoRow from "./LogoRow";
 
 const menu = [
   { href: "/", label: "Dashboard", icon: "📊" },
-  { href: "/upload-dokumen", label: "Upload Dokumen Program", icon: "✅" },
-  { href: "/riwayat-upload", label: "Riwayat Upload", icon: "🕓" },
-  { href: "/riwayat-aspek", label: "Riwayat Aspek", icon: "📋" },
   { href: "/riwayat-inspeksi", label: "Riwayat Inspeksi", icon: "🔍" },
   { href: "/form-inspeksi", label: "Form Inspeksi", icon: "📝" },
   { href: "/lifting-plan", label: "Pengajuan Lifting Plan", icon: "🏗️" },
+  { href: "/riwayat-lifting-plan", label: "Riwayat Lifting Plan", icon: "📚" },
   { href: "/lifting-report", label: "Lifting Report", icon: "📄" },
   { href: "/setting-target", label: "Setting Target", icon: "⚙️" },
 ];

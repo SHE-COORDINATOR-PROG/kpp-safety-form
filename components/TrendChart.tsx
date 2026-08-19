@@ -16,7 +16,6 @@ export type TrendDatum = {
   bulan: string;
   program: number;
   inspeksi: number;
-  upload: number;
   targetProgram: number;
   targetInspeksi: number;
 };
@@ -31,9 +30,8 @@ export default function TrendChart({ data }: { data: TrendDatum[] }) {
           <YAxis tick={{ fontSize: 10.5, fill: "#6b7280" }} />
           <Tooltip />
           <Legend wrapperStyle={{ fontSize: 11 }} />
-          <Bar dataKey="program" name="Program" fill="#16a34a" radius={[3, 3, 0, 0]} barSize={10} />
-          <Bar dataKey="inspeksi" name="Inspeksi" fill="#3b82f6" radius={[3, 3, 0, 0]} barSize={10} />
-          <Bar dataKey="upload" name="Upload" fill="#8b5cf6" radius={[3, 3, 0, 0]} barSize={10} />
+          <Bar dataKey="program" name="Program" fill="#16a34a" radius={[3, 3, 0, 0]} barSize={12} />
+          <Bar dataKey="inspeksi" name="Inspeksi" fill="#3b82f6" radius={[3, 3, 0, 0]} barSize={12} />
           <Line type="monotone" dataKey="targetProgram" name="Tgt Prog" stroke="#f97316" strokeDasharray="4 3" dot={{ r: 3 }} />
           <Line type="monotone" dataKey="targetInspeksi" name="Tgt Insp" stroke="#14b8a6" strokeDasharray="4 3" dot={{ r: 3 }} />
         </ComposedChart>
