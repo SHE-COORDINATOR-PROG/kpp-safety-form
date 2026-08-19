@@ -11,7 +11,7 @@ export async function getDashboardData(tahun: number) {
     totalProgram: inspectionForms.length,
     programSelesai: 0,
     totalInspeksi: 0,
-    totalUpload: 0,
+    totalLiftingPlan: 0,
     targetInspeksi: inspectionForms.length * 2,
     pencapaianPersen: 0,
     perKategori: categories.map((c) => ({
@@ -36,12 +36,12 @@ export async function getDashboardData(tahun: number) {
     const start = new Date(tahun, 0, 1);
     const end = new Date(tahun + 1, 0, 1);
 
-    const [records, uploads] = await Promise.all([
+    const [records, totalLiftingPlan] = await Promise.all([
       prisma.inspectionRecord.findMany({
         where: { tanggal: { gte: start, lt: end } },
         select: { formSlug: true, category: true, tanggal: true },
       }),
-      prisma.uploadedDocument.count({ where: { tahun } }),
+      prisma.liftingPlan.count({ where: { tanggalRencana: { gte: start, lt: end } } }),
     ]);
 
     const distinctSlugsInspected = new Set(records.map((r) => r.formSlug));
@@ -88,7 +88,7 @@ export async function getDashboardData(tahun: number) {
       totalProgram,
       programSelesai,
       totalInspeksi,
-      totalUpload: uploads,
+      totalLiftingPlan,
       targetInspeksi,
       pencapaianPersen: isFinite(pencapaianPersen) ? pencapaianPersen : 0,
       perKategori,

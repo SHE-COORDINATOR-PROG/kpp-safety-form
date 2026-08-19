@@ -65,6 +65,10 @@ model LiftingPlan {
   jsaTerlampir      Boolean  @default(false)
   sertifikatOperator Boolean @default(false)
   sertifikatAlat    Boolean  @default(false)
+  fotoUnitBase64    String?  @db.Text
+  fotoUnitNama      String?
+  dokumenPdfBase64  String?  @db.Text
+  dokumenPdfNama    String?
   status            String   @default("MENUNGGU_PERSETUJUAN") // MENUNGGU_PERSETUJUAN | DISETUJUI | DITOLAK
   disetujuiOleh     String?
   catatan           String?
