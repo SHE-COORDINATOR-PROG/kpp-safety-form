@@ -1,0 +1,119 @@
+// Prisma schema — KPP Mining Safety Dashboard
+// Database: Neon (Postgres serverless)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum StatusInspeksi {
+  BAIK
+  PERLU_PERHATIAN
+  TIDAK_LAYAK
+}
+
+enum StatusProgram {
+  SELESAI
+  BERJALAN
+  BELUM
+}
+
+// Satu baris = satu kali pengisian form inspeksi (form apapun, dibedakan oleh formSlug)
+model InspectionRecord {
+  id            String          @id @default(cuid())
+  formSlug      String // contoh: "forklift", "overhead-crane", "apd-seragam"
+  formTitle     String
+  category      String // Hand & Finger | Tools & Equipment | Lifting & Rigging | Near Water | Listrik & Las | Sertifikasi & Admin
+  unitOrLokasi  String // unit/alat/lokasi yang diperiksa
+  nomorAset     String?
+  inspector     String
+  tanggal       DateTime
+  items         Json // array checklist: [{ no, pertanyaan, dasarHukum, hasil, catatan }]
+  overallStatus StatusInspeksi  @default(BAIK)
+  catatanUmum   String?
+  fotoUrl       String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([formSlug])
+  @@index([tanggal])
+  @@index([category])
+}
+
+// Form pengajuan rencana pengangkatan (lifting plan) sebelum pekerjaan lifting dilakukan
+model LiftingPlan {
+  id                String   @id @default(cuid())
+  nomorPengajuan    String   @unique
+  namaPekerjaan     String
+  lokasi            String
+  tanggalRencana    DateTime
+  jenisAlatAngkat   String // Mobile Crane, Overhead Crane, Telehandler, Forklift, dll
+  bebanKg           Float
+  radiusMeter       Float?
+  swlKapasitasKg    Float // Safe Working Load alat
+  persenBeban       Float? // beban/SWL x 100
+  riggingPlan       String? // deskripsi metode rigging & alat bantu angkat
+  operator          String
+  rigger            String?
+  signalman         String?
+  supervisor        String
+  jsaTerlampir      Boolean  @default(false)
+  sertifikatOperator Boolean @default(false)
+  sertifikatAlat    Boolean  @default(false)
+  status            String   @default("MENUNGGU_PERSETUJUAN") // MENUNGGU_PERSETUJUAN | DISETUJUI | DITOLAK
+  disetujuiOleh     String?
+  catatan           String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  liftingReport LiftingReport?
+}
+
+// Laporan hasil pelaksanaan lifting, mengacu ke lifting plan yang sudah disetujui
+model LiftingReport {
+  id                String       @id @default(cuid())
+  liftingPlanId     String       @unique
+  liftingPlan       LiftingPlan  @relation(fields: [liftingPlanId], references: [id])
+  tanggalPelaksanaan DateTime
+  waktuMulai        String?
+  waktuSelesai      String?
+  kondisiCuaca      String?
+  hasilPemeriksaanAlat String // ringkasan pre-use inspection alat angkat sebelum lifting
+  kejadianAbnormal  String?
+  insidenTerjadi    Boolean      @default(false)
+  deskripsiInsiden  String?
+  dokumentasiUrl    String?
+  disetujuiSupervisor String
+  status            String       @default("SELESAI") // SELESAI | DIHENTIKAN | TERTUNDA
+  createdAt         DateTime     @default(now())
+}
+
+// Target program kerja tahunan per kategori (untuk dashboard "Setting Target")
+model ProgramTarget {
+  id           String   @id @default(cuid())
+  tahun        Int
+  kategori     String
+  targetProgram Int
+  targetInspeksi Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([tahun, kategori])
+}
+
+// Dokumen program yang diupload (bukti pelaksanaan program kerja)
+model UploadedDocument {
+  id         String   @id @default(cuid())
+  kategori   String
+  namaFile   String
+  url        String
+  bulan      Int
+  tahun      Int
+  uploadedBy String
+  createdAt  DateTime @default(now())
+}
