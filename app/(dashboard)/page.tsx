@@ -11,7 +11,7 @@ const kategoriColor: Record<string, string> = {
   "Hand & Finger": "#16a34a",
   "Tools & Equipment": "#3b82f6",
   "Lifting & Rigging": "#8b5cf6",
-  "Near Water": "#f97316",
+  "Environment": "#f97316",
   "Listrik & Las": "#14b8a6",
   "Sertifikasi & Admin": "#f5b301",
 };
