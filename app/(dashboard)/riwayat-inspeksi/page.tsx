@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 async function getRecords() {
   try {
     return await prisma.inspectionRecord.findMany({ orderBy: { tanggal: "desc" }, take: 100 });
