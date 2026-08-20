@@ -17,7 +17,7 @@ export type InspectionFormConfig = {
     | "Hand & Finger"
     | "Tools & Equipment"
     | "Lifting & Rigging"
-    | "Near Water"
+    | "Environment"
     | "Listrik & Las"
     | "Sertifikasi & Admin";
   dasarHukum: string[];
@@ -193,7 +193,7 @@ export const inspectionForms: InspectionFormConfig[] = [
   {
     slug: "oil-trap",
     title: "Inspeksi Oil Trap",
-    category: "Near Water",
+    category: "Environment",
     dasarHukum: [
       "PP No. 22 Tahun 2021 tentang Penyelenggaraan Perlindungan dan Pengelolaan Lingkungan Hidup",
       UU_K3,
@@ -212,7 +212,7 @@ export const inspectionForms: InspectionFormConfig[] = [
   {
     slug: "tps-limbah-b3",
     title: "Inspeksi TPS Limbah B3",
-    category: "Near Water",
+    category: "Environment",
     dasarHukum: [
       "PP No. 22 Tahun 2021 tentang Penyelenggaraan Perlindungan dan Pengelolaan Lingkungan Hidup",
       "Permen LHK No. P.12/2020 tentang Penyimpanan Limbah B3",
@@ -378,7 +378,7 @@ export const categories = [
   "Hand & Finger",
   "Tools & Equipment",
   "Lifting & Rigging",
-  "Near Water",
+  "Environment",
   "Listrik & Las",
   "Sertifikasi & Admin",
 ] as const;
