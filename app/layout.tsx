@@ -1,15 +1,10 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import Sidebar from "@/components/Sidebar";
 
-export const metadata: Metadata = {
-  title: "KPP Mining — Safety Dashboard",
-  description: "Program Kerja Plant Safety & Form Inspeksi K3",
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id">
-      <body className="antialiased">{children}</body>
-    </html>
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <main className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 lg:pb-8 pt-[68px] lg:pt-8">{children}</main>
+    </div>
   );
 }
