@@ -5,6 +5,8 @@ import StatusDonut from "@/components/StatusDonut";
 import TrendChart from "@/components/TrendChart";
 import { getDashboardData } from "@/lib/dashboard";
 
+export const dynamic = "force-dynamic";
+
 const kategoriColor: Record<string, string> = {
   "Hand & Finger": "#16a34a",
   "Tools & Equipment": "#3b82f6",
