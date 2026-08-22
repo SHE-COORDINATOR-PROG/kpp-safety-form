@@ -78,8 +78,8 @@ export default function RiwayatLimbahB3Page() {
         </head>
         <body>
           <div class="header">
-            <img src="${origin}/logos/kpp-mining.png" />
-            <div class="company-name">KPP MINING</div>
+            <img src="${origin}/logos/asmin-bara-bronang.png" />
+            <div class="company-name">PT ASMIN BARA BRONANG</div>
             <div class="company-sub">Program Kerja Plant Safety</div>
             <div class="no-form">NO FORM<br/>${r.nomorForm}</div>
           </div>
