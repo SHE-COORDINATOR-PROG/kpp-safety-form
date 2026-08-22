@@ -42,22 +42,32 @@ export default function RiwayatLiftingPlanPage() {
   function exportPdf(plan: Plan) {
     const win = window.open("", "_blank");
     if (!win) return;
+    const origin = window.location.origin;
     win.document.write(`
       <html>
         <head>
           <title>Lifting Plan ${plan.nomorPengajuan}</title>
           <style>
             body { font-family: Arial, sans-serif; padding: 32px; color: #1f2937; }
+            .header { position: relative; text-align: center; border-bottom: 3px solid #8b5cf6; padding-bottom: 6px; margin-bottom: 14px; min-height: 46px; }
+            .header img { position: absolute; left: 0; top: 0; height: 42px; width: auto; }
+            .header .company-name { font-size: 14px; font-weight: bold; line-height: 1.2; padding-top: 2px; }
+            .header .company-sub { font-size: 10px; color: #6b7280; }
             h1 { font-size: 18px; margin-bottom: 4px; }
             .muted { color: #6b7280; font-size: 12px; margin-bottom: 20px; }
             table { width: 100%; border-collapse: collapse; margin-top: 12px; }
             td { padding: 6px 8px; border-bottom: 1px solid #e5e7eb; font-size: 13px; vertical-align: top; }
             td.label { color: #6b7280; width: 220px; }
-            img { max-width: 240px; margin-top: 10px; border-radius: 8px; }
+            img.foto { max-width: 240px; margin-top: 10px; border-radius: 8px; }
             .badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; background:#e8f8ee; color:#0f7a37; }
           </style>
         </head>
         <body>
+          <div class="header">
+            <img src="${origin}/logos/kpp-mining.png" />
+            <div class="company-name">KPP MINING</div>
+            <div class="company-sub">Program Kerja Plant Safety</div>
+          </div>
           <h1>Pengajuan Lifting Plan — ${plan.nomorPengajuan}</h1>
           <p class="muted">Dicetak ${new Date().toLocaleString("id-ID")}</p>
           <table>
@@ -72,7 +82,7 @@ export default function RiwayatLiftingPlanPage() {
             <tr><td class="label">Supervisor</td><td>${plan.supervisor}</td></tr>
             <tr><td class="label">Status</td><td><span class="badge">${plan.status.replace(/_/g, " ")}</span></td></tr>
           </table>
-          ${plan.fotoUnitBase64 ? `<p class="muted" style="margin-top:16px;">Foto Unit:</p><img src="${plan.fotoUnitBase64}" />` : ""}
+          ${plan.fotoUnitBase64 ? `<p class="muted" style="margin-top:16px;">Foto Unit:</p><img class="foto" src="${plan.fotoUnitBase64}" />` : ""}
           <script>window.print();</script>
         </body>
       </html>
