@@ -117,7 +117,7 @@ export default function LiftingReportPage() {
             <tr><td class="label">Status</td><td>${r.status}</td></tr>
             <tr><td class="label">Disetujui Oleh</td><td>${r.disetujuiSupervisor}</td></tr>
           </table>
-          <script>window.print();</script>
+          <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };</script>
         </body>
       </html>
     `);
