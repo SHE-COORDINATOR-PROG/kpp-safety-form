@@ -83,7 +83,7 @@ export default function RiwayatLiftingPlanPage() {
             <tr><td class="label">Status</td><td><span class="badge">${plan.status.replace(/_/g, " ")}</span></td></tr>
           </table>
           ${plan.fotoUnitBase64 ? `<p class="muted" style="margin-top:16px;">Foto Unit:</p><img class="foto" src="${plan.fotoUnitBase64}" />` : ""}
-          <script>window.print();</script>
+          <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };</script>
         </body>
       </html>
     `);
