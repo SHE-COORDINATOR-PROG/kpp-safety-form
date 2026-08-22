@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { kodeLimbahOptions, jumlahLimbahOptions, jumlahKemasanOptions, getHariIndo } from "@/lib/limbahB3";
+import { useEffect, useState } from "react";
+import { kodeLimbahOptions, getJumlahLimbahOptions, getJumlahKemasanOptions, getHariIndo } from "@/lib/limbahB3";
 
 const MAX_FILE_MB = 4;
 
@@ -24,8 +24,8 @@ export default function LimbahB3Form() {
     kodeLimbah: kodeLimbahOptions[0],
     tanggalDihasilkanMulai: today,
     tanggalDihasilkanSelesai: today,
-    jumlahLimbahKeluar: jumlahLimbahOptions[0],
-    jumlahKemasan: jumlahKemasanOptions[0],
+    jumlahLimbahKeluar: getJumlahLimbahOptions(kodeLimbahOptions[0])[0],
+    jumlahKemasan: getJumlahKemasanOptions(kodeLimbahOptions[0])[0],
     perusahaanPengangkut: "PT. WGI",
     nomorManifest: "",
     nomorKendaraan: "",
@@ -33,6 +33,21 @@ export default function LimbahB3Form() {
     actualTanggalPengambilan: "",
     actualJumlah: "",
   });
+
+  const jumlahLimbahOptions = getJumlahLimbahOptions(form.kodeLimbah);
+  const jumlahKemasanOptions = getJumlahKemasanOptions(form.kodeLimbah);
+
+  // Saat jenis limbah berganti, reset pilihan jumlah limbah & kemasan
+  // supaya tidak menyisakan nilai dari kategori sebelumnya yang sudah tidak relevan.
+  useEffect(() => {
+    setForm((f) => ({
+      ...f,
+      jumlahLimbahKeluar: getJumlahLimbahOptions(f.kodeLimbah)[0],
+      jumlahKemasan: getJumlahKemasanOptions(f.kodeLimbah)[0],
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.kodeLimbah]);
+
   const [ttdFoto, setTtdFoto] = useState<{ name: string; base64: string } | null>(null);
   const [lampiranFoto, setLampiranFoto] = useState<{ name: string; base64: string } | null>(null);
   const [fileError, setFileError] = useState("");
