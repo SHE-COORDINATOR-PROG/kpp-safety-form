@@ -13,6 +13,8 @@ const menu = [
   { href: "/lifting-plan", label: "Pengajuan Lifting Plan", icon: "🏗️" },
   { href: "/riwayat-lifting-plan", label: "Riwayat Lifting Plan", icon: "📚" },
   { href: "/lifting-report", label: "Lifting Report", icon: "📄" },
+  { href: "/pengajuan-limbah-b3", label: "Pengajuan Limbah B3", icon: "♻️" },
+  { href: "/riwayat-limbah-b3", label: "Riwayat Limbah B3", icon: "🗂️" },
   { href: "/setting-target", label: "Setting Target", icon: "⚙️" },
 ];
 
