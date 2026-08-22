@@ -23,5 +23,8 @@ export function getHariIndo(tanggal: string | Date): string {
 
 export function formatTanggalIndo(tanggal: string | Date): string {
   const d = typeof tanggal === "string" ? new Date(tanggal) : tanggal;
-  return d.toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "2-digit" });
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
 }
