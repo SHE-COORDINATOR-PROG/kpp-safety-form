@@ -121,3 +121,33 @@ model UploadedDocument {
   uploadedBy String
   createdAt  DateTime @default(now())
 }
+
+// Form Pengajuan Pengambilan Limbah B3 dari TPS
+model WasteB3Request {
+  id                      String    @id @default(cuid())
+  nomorForm               String    @unique
+  nomorRegister           Int
+  hari                    String
+  tanggal                 DateTime
+  lokasiTps               String    @default("PT.KPP - Workshop 25")
+  rencanaMulai            DateTime
+  rencanaSelesai          DateTime
+  kodeLimbah              String
+  tanggalDihasilkanMulai  DateTime
+  tanggalDihasilkanSelesai DateTime
+  masaSimpanHari          Int       @default(90)
+  jumlahLimbahKeluar      String
+  jumlahKemasan           String
+  perusahaanPengangkut    String    @default("PT. WGI")
+  nomorManifest           String?
+  nomorKendaraan          String?
+  catatan                 String?
+  actualTanggalPengambilan DateTime?
+  actualJumlah            String?
+  ttdFotoBase64           String?   @db.Text
+  ttdFotoNama             String?
+  lampiranFotoBase64      String?   @db.Text
+  lampiranFotoNama        String?
+  status                  String    @default("DIAJUKAN")
+  createdAt               DateTime  @default(now())
+}
