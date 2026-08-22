@@ -126,7 +126,7 @@ export default function RiwayatLimbahB3Page() {
 
           ${r.lampiranFotoBase64 ? `<div class="lampiran-title">LAMPIRAN :<img src="${r.lampiranFotoBase64}" /></div>` : ""}
 
-          <script>window.print();</script>
+          <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };</script>
         </body>
       </html>
     `);
