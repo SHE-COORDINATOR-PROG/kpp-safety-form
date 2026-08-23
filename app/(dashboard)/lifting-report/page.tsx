@@ -80,21 +80,25 @@ export default function LiftingReportPage() {
     const win = window.open("", "_blank");
     if (!win) return;
     const origin = window.location.origin;
+    const row = (label: string, value: string) => `<tr><td class="label">${label}</td><td class="value">${value}</td></tr>`;
     win.document.write(`
       <html>
         <head>
           <title>Lifting Report — ${r.liftingPlan.nomorPengajuan}</title>
           <style>
-            body { font-family: Arial, sans-serif; padding: 32px; color: #1f2937; }
-            .header { position: relative; text-align: center; border-bottom: 3px solid #8b5cf6; padding-bottom: 6px; margin-bottom: 14px; min-height: 46px; }
+            @page { size: A4; margin: 12mm; }
+            * { box-sizing: border-box; }
+            body { font-family: 'Times New Roman', serif; padding: 10px 16px; color: #111; font-size: 12px; }
+            .header { position: relative; text-align: center; border-bottom: 3px solid #8b5cf6; padding-bottom: 6px; margin-bottom: 10px; min-height: 46px; }
             .header img { position: absolute; left: 0; top: 0; height: 42px; width: auto; }
-            .header .company-name { font-size: 14px; font-weight: bold; line-height: 1.2; padding-top: 2px; }
-            .header .company-sub { font-size: 10px; color: #6b7280; }
-            h1 { font-size: 18px; margin-bottom: 4px; }
-            .muted { color: #6b7280; font-size: 12px; margin-bottom: 20px; }
-            table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-            td { padding: 6px 8px; border-bottom: 1px solid #e5e7eb; font-size: 13px; vertical-align: top; }
-            td.label { color: #6b7280; width: 220px; }
+            .company-name { font-size: 14px; font-weight: bold; line-height: 1.2; padding-top: 2px; }
+            .company-sub { font-size: 10px; color: #555; }
+            h1 { text-align: center; font-size: 15px; margin: 6px 0 2px; }
+            .muted { text-align: center; color: #555; font-size: 11px; margin-bottom: 12px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+            td { border: 1px solid #000; padding: 4px 8px; font-size: 11.5px; vertical-align: top; }
+            td.label { width: 38%; font-weight: bold; }
+            td.value { color: #1a4fa0; font-weight: bold; }
           </style>
         </head>
         <body>
@@ -103,19 +107,19 @@ export default function LiftingReportPage() {
             <div class="company-name">KPP MINING</div>
             <div class="company-sub">Program Kerja Plant Safety</div>
           </div>
-          <h1>Lifting Report — ${r.liftingPlan.nomorPengajuan}</h1>
+          <h1>LIFTING REPORT — ${r.liftingPlan.nomorPengajuan}</h1>
           <p class="muted">Dicetak ${new Date().toLocaleString("id-ID")}</p>
           <table>
-            <tr><td class="label">Pekerjaan</td><td>${r.liftingPlan.namaPekerjaan}</td></tr>
-            <tr><td class="label">Lokasi</td><td>${r.liftingPlan.lokasi}</td></tr>
-            <tr><td class="label">Tanggal Pelaksanaan</td><td>${new Date(r.tanggalPelaksanaan).toLocaleDateString("id-ID")}</td></tr>
-            <tr><td class="label">Waktu</td><td>${r.waktuMulai || "-"} s/d ${r.waktuSelesai || "-"}</td></tr>
-            <tr><td class="label">Kondisi Cuaca</td><td>${r.kondisiCuaca || "-"}</td></tr>
-            <tr><td class="label">Hasil Pemeriksaan Alat</td><td>${r.hasilPemeriksaanAlat}</td></tr>
-            <tr><td class="label">Kejadian Abnormal</td><td>${r.kejadianAbnormal || "Tidak ada"}</td></tr>
-            <tr><td class="label">Insiden Terjadi</td><td>${r.insidenTerjadi ? "Ya" : "Tidak"}</td></tr>
-            <tr><td class="label">Status</td><td>${r.status}</td></tr>
-            <tr><td class="label">Disetujui Oleh</td><td>${r.disetujuiSupervisor}</td></tr>
+            ${row("Pekerjaan", r.liftingPlan.namaPekerjaan)}
+            ${row("Lokasi", r.liftingPlan.lokasi)}
+            ${row("Tanggal Pelaksanaan", new Date(r.tanggalPelaksanaan).toLocaleDateString("id-ID"))}
+            ${row("Waktu", `${r.waktuMulai || "-"} s/d ${r.waktuSelesai || "-"}`)}
+            ${row("Kondisi Cuaca", r.kondisiCuaca || "-")}
+            ${row("Hasil Pemeriksaan Alat", r.hasilPemeriksaanAlat)}
+            ${row("Kejadian Abnormal", r.kejadianAbnormal || "Tidak ada")}
+            ${row("Insiden Terjadi", r.insidenTerjadi ? "Ya" : "Tidak")}
+            ${row("Status", r.status)}
+            ${row("Disetujui Oleh", r.disetujuiSupervisor)}
           </table>
           <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };</script>
         </body>
