@@ -43,23 +43,32 @@ export default function RiwayatLiftingPlanPage() {
     const win = window.open("", "_blank");
     if (!win) return;
     const origin = window.location.origin;
+    const row = (label: string, value: string) => `<tr><td class="label">${label}</td><td class="value">${value}</td></tr>`;
     win.document.write(`
       <html>
         <head>
           <title>Lifting Plan ${plan.nomorPengajuan}</title>
           <style>
-            body { font-family: Arial, sans-serif; padding: 32px; color: #1f2937; }
-            .header { position: relative; text-align: center; border-bottom: 3px solid #8b5cf6; padding-bottom: 6px; margin-bottom: 14px; min-height: 46px; }
+            @page { size: A4; margin: 12mm; }
+            * { box-sizing: border-box; }
+            body { font-family: 'Times New Roman', serif; padding: 10px 16px; color: #111; font-size: 12px; }
+            .header { position: relative; text-align: center; border-bottom: 3px solid #8b5cf6; padding-bottom: 6px; margin-bottom: 10px; min-height: 46px; }
             .header img { position: absolute; left: 0; top: 0; height: 42px; width: auto; }
-            .header .company-name { font-size: 14px; font-weight: bold; line-height: 1.2; padding-top: 2px; }
-            .header .company-sub { font-size: 10px; color: #6b7280; }
-            h1 { font-size: 18px; margin-bottom: 4px; }
-            .muted { color: #6b7280; font-size: 12px; margin-bottom: 20px; }
-            table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-            td { padding: 6px 8px; border-bottom: 1px solid #e5e7eb; font-size: 13px; vertical-align: top; }
-            td.label { color: #6b7280; width: 220px; }
-            img.foto { max-width: 240px; margin-top: 10px; border-radius: 8px; }
-            .badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; background:#e8f8ee; color:#0f7a37; }
+            .company-name { font-size: 14px; font-weight: bold; line-height: 1.2; padding-top: 2px; }
+            .company-sub { font-size: 10px; color: #555; }
+            h1 { text-align: center; font-size: 15px; margin: 6px 0 2px; }
+            .muted { text-align: center; color: #555; font-size: 11px; margin-bottom: 12px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+            td { border: 1px solid #000; padding: 4px 8px; font-size: 11.5px; vertical-align: top; }
+            td.label { width: 38%; font-weight: bold; }
+            td.value { color: #1a4fa0; font-weight: bold; }
+            img.foto { max-width: 220px; margin-top: 8px; border: 1px solid #ccc; }
+            .badge { display:inline-block; padding:2px 10px; border-radius:999px; font-size:10.5px; background:#e8f8ee; color:#0f7a37; }
+            .lampiran-title { font-weight: bold; margin-top: 16px; font-size: 12px; }
+            .pdf-chip { display:inline-block; margin-top:6px; padding:4px 10px; border:1px solid #999; border-radius:6px; font-size:11px; }
+            .approval-row { display: flex; justify-content: space-around; margin-top: 32px; text-align: center; }
+            .approval-col { width: 40%; font-size: 11.5px; }
+            .approval-line { margin-top: 55px; border-top: 1px solid #000; padding-top: 4px; font-weight: bold; }
           </style>
         </head>
         <body>
@@ -68,21 +77,35 @@ export default function RiwayatLiftingPlanPage() {
             <div class="company-name">KPP MINING</div>
             <div class="company-sub">Program Kerja Plant Safety</div>
           </div>
-          <h1>Pengajuan Lifting Plan — ${plan.nomorPengajuan}</h1>
+          <h1>PENGAJUAN LIFTING PLAN — ${plan.nomorPengajuan}</h1>
           <p class="muted">Dicetak ${new Date().toLocaleString("id-ID")}</p>
           <table>
-            <tr><td class="label">Nama Pekerjaan</td><td>${plan.namaPekerjaan}</td></tr>
-            <tr><td class="label">Lokasi</td><td>${plan.lokasi}</td></tr>
-            <tr><td class="label">Tanggal Rencana</td><td>${new Date(plan.tanggalRencana).toLocaleDateString("id-ID")}</td></tr>
-            <tr><td class="label">Jenis Alat Angkat</td><td>${plan.jenisAlatAngkat}</td></tr>
-            <tr><td class="label">Berat Beban</td><td>${plan.bebanKg} kg</td></tr>
-            <tr><td class="label">Kapasitas SWL</td><td>${plan.swlKapasitasKg} kg</td></tr>
-            <tr><td class="label">% Beban / SWL</td><td>${plan.persenBeban ?? "-"}%</td></tr>
-            <tr><td class="label">Operator</td><td>${plan.operator}</td></tr>
-            <tr><td class="label">Supervisor</td><td>${plan.supervisor}</td></tr>
+            ${row("Nama Pekerjaan", plan.namaPekerjaan)}
+            ${row("Lokasi", plan.lokasi)}
+            ${row("Tanggal Rencana", new Date(plan.tanggalRencana).toLocaleDateString("id-ID"))}
+            ${row("Jenis Alat Angkat", plan.jenisAlatAngkat)}
+            ${row("Berat Beban", `${plan.bebanKg} kg`)}
+            ${row("Kapasitas SWL", `${plan.swlKapasitasKg} kg`)}
+            ${row("% Beban / SWL", `${plan.persenBeban ?? "-"}%`)}
+            ${row("Operator", plan.operator)}
+            ${row("Supervisor", plan.supervisor)}
             <tr><td class="label">Status</td><td><span class="badge">${plan.status.replace(/_/g, " ")}</span></td></tr>
           </table>
-          ${plan.fotoUnitBase64 ? `<p class="muted" style="margin-top:16px;">Foto Unit:</p><img class="foto" src="${plan.fotoUnitBase64}" />` : ""}
+
+          <div class="lampiran-title">LAMPIRAN :</div>
+          ${plan.fotoUnitBase64 ? `<p style="margin:6px 0 0; font-size:11px;">Foto Unit Alat Angkat:</p><img class="foto" src="${plan.fotoUnitBase64}" />` : `<p style="margin:6px 0 0; font-size:11px; color:#888;">Tidak ada foto unit yang diupload.</p>`}
+          ${plan.dokumenPdfBase64 ? `<div class="pdf-chip">📄 Dokumen terlampir: ${plan.dokumenPdfNama || "dokumen.pdf"}</div>` : ""}
+
+          <div class="approval-row">
+            <div class="approval-col">
+              <div class="approval-line">${plan.supervisor}</div>
+              Diajukan Oleh (Supervisor)
+            </div>
+            <div class="approval-col">
+              <div class="approval-line">&nbsp;</div>
+              Disetujui Oleh
+            </div>
+          </div>
           <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };</script>
         </body>
       </html>
