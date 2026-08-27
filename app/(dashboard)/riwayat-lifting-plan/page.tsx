@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+// Daftar ringkas (list) — TIDAK memuat foto/PDF (base64) supaya cepat.
 type Plan = {
   id: string;
   nomorPengajuan: string;
@@ -15,11 +16,16 @@ type Plan = {
   operator: string;
   supervisor: string;
   status: string;
-  fotoUnitBase64: string | null;
-  dokumenPdfBase64: string | null;
+  fotoUnitNama: string | null;
   dokumenPdfNama: string | null;
   createdAt: string;
   liftingReport: { id: string } | null;
+};
+
+// Detail lengkap — dipanggil hanya saat dibutuhkan (klik Export/Lihat PDF).
+type PlanDetail = Plan & {
+  fotoUnitBase64: string | null;
+  dokumenPdfBase64: string | null;
 };
 
 const statusBadge: Record<string, string> = {
@@ -31,6 +37,7 @@ const statusBadge: Record<string, string> = {
 export default function RiwayatLiftingPlanPage() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/lifting-plan")
@@ -39,7 +46,35 @@ export default function RiwayatLiftingPlanPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  function exportPdf(plan: Plan) {
+  async function getDetail(id: string): Promise<PlanDetail | null> {
+    try {
+      const res = await fetch(`/api/lifting-plan/${id}`);
+      const j = await res.json();
+      if (!res.ok) return null;
+      return j.plan as PlanDetail;
+    } catch {
+      return null;
+    }
+  }
+
+  async function handleLihatPdf(id: string) {
+    setLoadingAction(id + "-pdf");
+    const detail = await getDetail(id);
+    setLoadingAction(null);
+    if (!detail?.dokumenPdfBase64) return;
+    // Ubah data URL jadi Blob supaya bisa dibuka di tab baru dengan andal.
+    const res = await fetch(detail.dokumenPdfBase64);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+  }
+
+  async function exportPdf(planListItem: Plan) {
+    setLoadingAction(planListItem.id + "-export");
+    const plan = await getDetail(planListItem.id);
+    setLoadingAction(null);
+    if (!plan) return;
+
     const win = window.open("", "_blank");
     if (!win) return;
     const origin = window.location.origin;
@@ -136,8 +171,8 @@ export default function RiwayatLiftingPlanPage() {
                   <p className="font-semibold text-brand-ink mt-0.5">{p.namaPekerjaan}</p>
                   <p className="text-xs text-brand-muted mt-0.5">{p.lokasi} · {p.jenisAlatAngkat}</p>
                 </div>
-                {p.fotoUnitBase64 && (
-                  <img src={p.fotoUnitBase64} alt="foto unit" className="w-14 h-14 rounded-lg object-cover border border-brand-line shrink-0" />
+                {p.fotoUnitNama && (
+                  <span className="text-lg shrink-0" title={p.fotoUnitNama}>📷</span>
                 )}
               </div>
 
@@ -161,22 +196,23 @@ export default function RiwayatLiftingPlanPage() {
                     Belum ada report
                   </span>
                 )}
-                {p.dokumenPdfBase64 && (
-                  <a
-                    href={p.dokumenPdfBase64}
-                    download={p.dokumenPdfNama || "dokumen.pdf"}
-                    className="text-[11px] font-medium px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+                {p.dokumenPdfNama && (
+                  <button
+                    onClick={() => handleLihatPdf(p.id)}
+                    disabled={loadingAction === p.id + "-pdf"}
+                    className="text-[11px] font-medium px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
                   >
-                    📄 Lihat PDF
-                  </a>
+                    {loadingAction === p.id + "-pdf" ? "Memuat..." : "📄 Lihat PDF"}
+                  </button>
                 )}
               </div>
 
               <button
                 onClick={() => exportPdf(p)}
-                className="mt-3 text-xs font-medium text-brand-purple underline"
+                disabled={loadingAction === p.id + "-export"}
+                className="mt-3 text-xs font-medium text-brand-purple underline disabled:opacity-50"
               >
-                🖨️ Export / Cetak PDF
+                {loadingAction === p.id + "-export" ? "Menyiapkan..." : "🖨️ Export / Cetak PDF"}
               </button>
             </div>
           ))}
