@@ -129,7 +129,7 @@ export default function RiwayatLiftingPlanPage() {
 
           <div class="lampiran-title">LAMPIRAN :</div>
           ${plan.fotoUnitBase64 ? `<p style="margin:6px 0 0; font-size:11px;">Foto Unit Alat Angkat:</p><img class="foto" src="${plan.fotoUnitBase64}" />` : `<p style="margin:6px 0 0; font-size:11px; color:#888;">Tidak ada foto unit yang diupload.</p>`}
-          ${plan.dokumenPdfBase64 ? `<div class="pdf-chip">📄 Dokumen terlampir: ${plan.dokumenPdfNama || "dokumen.pdf"}</div>` : ""}
+          ${plan.dokumenPdfBase64 ? `<p style="margin:10px 0 0; font-size:11px;">Foto Dokumen Pendukung:</p><img class="foto" src="${plan.dokumenPdfBase64}" />` : ""}
 
           <div class="approval-row">
             <div class="approval-col">
@@ -202,7 +202,7 @@ export default function RiwayatLiftingPlanPage() {
                     disabled={loadingAction === p.id + "-pdf"}
                     className="text-[11px] font-medium px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50"
                   >
-                    {loadingAction === p.id + "-pdf" ? "Memuat..." : "📄 Lihat PDF"}
+                    {loadingAction === p.id + "-pdf" ? "Memuat..." : "🖼️ Lihat Foto Dokumen"}
                   </button>
                 )}
               </div>
