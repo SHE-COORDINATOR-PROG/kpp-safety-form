@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatTanggalIndo } from "@/lib/limbahB3";
 
+// Daftar ringkas — tanpa foto (base64) supaya cepat dimuat.
 type Req = {
   id: string;
   nomorForm: string;
@@ -24,14 +25,21 @@ type Req = {
   catatan: string | null;
   actualTanggalPengambilan: string | null;
   actualJumlah: string | null;
+  ttdFotoNama: string | null;
+  lampiranFotoNama: string | null;
+  status: string;
+};
+
+// Detail lengkap dengan foto — diambil hanya saat Export diklik.
+type ReqDetail = Req & {
   ttdFotoBase64: string | null;
   lampiranFotoBase64: string | null;
-  status: string;
 };
 
 export default function RiwayatLimbahB3Page() {
   const [records, setRecords] = useState<Req[]>([]);
   const [loading, setLoading] = useState(true);
+  const [exportingId, setExportingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/limbah-b3")
@@ -40,7 +48,17 @@ export default function RiwayatLimbahB3Page() {
       .finally(() => setLoading(false));
   }, []);
 
-  function exportPdf(r: Req) {
+  async function exportPdf(item: Req) {
+    setExportingId(item.id);
+    let r: ReqDetail = item as ReqDetail;
+    try {
+      const res = await fetch(`/api/limbah-b3/${item.id}`);
+      const j = await res.json();
+      if (res.ok) r = j.record;
+    } finally {
+      setExportingId(null);
+    }
+
     const win = window.open("", "_blank");
     if (!win) return;
     const origin = window.location.origin;
@@ -164,8 +182,12 @@ export default function RiwayatLimbahB3Page() {
                 <div><span className="text-brand-muted">Kemasan:</span> {r.jumlahKemasan}</div>
                 <div><span className="text-brand-muted">Pengangkut:</span> {r.perusahaanPengangkut}</div>
               </div>
-              <button onClick={() => exportPdf(r)} className="mt-3 text-xs font-medium text-brand-green underline">
-                🖨️ Export / Cetak PDF
+              <button
+                onClick={() => exportPdf(r)}
+                disabled={exportingId === r.id}
+                className="mt-3 text-xs font-medium text-brand-green underline disabled:opacity-50"
+              >
+                {exportingId === r.id ? "Menyiapkan..." : "🖨️ Export / Cetak PDF"}
               </button>
             </div>
           ))}
