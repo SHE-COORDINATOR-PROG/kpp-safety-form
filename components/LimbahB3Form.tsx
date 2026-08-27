@@ -184,7 +184,7 @@ export default function LimbahB3Form() {
               <option value={MANUAL_OPTION}>Lainnya (Input Manual)</option>
             </select>
             {jumlahMode === "manual" && (
-              <div className="flex gap-2 mt-2">
+              <div className="grid mt-2" style={{ gridTemplateColumns: "1fr 100px", gap: "8px" }}>
                 <input
                   type="number"
                   step="0.001"
@@ -193,12 +193,14 @@ export default function LimbahB3Form() {
                   value={manualAngka}
                   onChange={(e) => updateManual(e.target.value, manualSatuan)}
                   placeholder="Contoh: 1,25"
-                  className="input flex-1"
+                  className="input"
+                  style={{ minWidth: 0, width: "100%" }}
                 />
                 <select
                   value={manualSatuan}
                   onChange={(e) => updateManual(manualAngka, e.target.value)}
-                  className="input w-28"
+                  className="input"
+                  style={{ minWidth: 0, width: "100%" }}
                 >
                   {["Ton", "Kg", "Liter"].map((s) => <option key={s}>{s}</option>)}
                 </select>
