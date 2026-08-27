@@ -51,7 +51,36 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
-    const records = await prisma.wasteB3Request.findMany({ orderBy: { createdAt: "desc" }, take: 100 });
+    const records = await prisma.wasteB3Request.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 100,
+      select: {
+        id: true,
+        nomorForm: true,
+        nomorRegister: true,
+        hari: true,
+        tanggal: true,
+        lokasiTps: true,
+        rencanaMulai: true,
+        rencanaSelesai: true,
+        kodeLimbah: true,
+        tanggalDihasilkanMulai: true,
+        tanggalDihasilkanSelesai: true,
+        masaSimpanHari: true,
+        jumlahLimbahKeluar: true,
+        jumlahKemasan: true,
+        perusahaanPengangkut: true,
+        nomorManifest: true,
+        nomorKendaraan: true,
+        catatan: true,
+        actualTanggalPengambilan: true,
+        actualJumlah: true,
+        ttdFotoNama: true,
+        lampiranFotoNama: true,
+        status: true,
+        createdAt: true,
+      },
+    });
     return NextResponse.json({ records });
   } catch {
     return NextResponse.json({ records: [] });
