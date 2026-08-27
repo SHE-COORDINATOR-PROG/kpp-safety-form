@@ -2,17 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { kodeLimbahOptions, getJumlahLimbahOptions, getJumlahKemasanOptions, getHariIndo } from "@/lib/limbahB3";
+import { compressImageToBase64 } from "@/lib/imageUtils";
 
-const MAX_FILE_MB = 4;
-
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
+const MAX_FILE_MB = 10; // batas file ASLI dari kamera; hasil akhir otomatis dikompres jadi jauh lebih kecil
 
 export default function LimbahB3Form() {
   const today = new Date().toISOString().slice(0, 10);
@@ -67,7 +59,7 @@ export default function LimbahB3Form() {
       setFileError(`Ukuran foto maksimal ${MAX_FILE_MB}MB.`);
       return;
     }
-    const base64 = await fileToBase64(file);
+    const base64 = await compressImageToBase64(file);
     if (target === "ttd") setTtdFoto({ name: file.name, base64 });
     else setLampiranFoto({ name: file.name, base64 });
   }

@@ -1,17 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { compressImageToBase64 } from "@/lib/imageUtils";
 
-const MAX_FILE_MB = 4;
-
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
+const MAX_FILE_MB = 10; // batas file ASLI dari kamera; hasil akhir otomatis dikompres jadi jauh lebih kecil
 
 export default function LiftingPlanForm({ standalone = false }: { standalone?: boolean }) {
   const [form, setForm] = useState({
@@ -55,23 +47,19 @@ export default function LiftingPlanForm({ standalone = false }: { standalone?: b
       setFileError(`Ukuran foto maksimal ${MAX_FILE_MB}MB.`);
       return;
     }
-    const base64 = await fileToBase64(file);
+    const base64 = await compressImageToBase64(file);
     setFotoUnit({ name: file.name, base64 });
   }
 
-  async function handlePdf(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFotoDokumen(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setFileError("");
-    if (file.type !== "application/pdf") {
-      setFileError("File dokumen harus berformat PDF.");
-      return;
-    }
     if (file.size > MAX_FILE_MB * 1024 * 1024) {
-      setFileError(`Ukuran PDF maksimal ${MAX_FILE_MB}MB.`);
+      setFileError(`Ukuran foto maksimal ${MAX_FILE_MB}MB.`);
       return;
     }
-    const base64 = await fileToBase64(file);
+    const base64 = await compressImageToBase64(file);
     setDokumenPdf({ name: file.name, base64 });
   }
 
@@ -195,10 +183,13 @@ export default function LiftingPlanForm({ standalone = false }: { standalone?: b
               </div>
             )}
           </Field>
-          <Field label="Import PDF Dokumen Pengajuan (JSA/SOP/lainnya)">
-            <input type="file" accept="application/pdf" onChange={handlePdf} className="input" />
+          <Field label="Upload Foto Dokumen Pendukung (JSA/SOP/lainnya)">
+            <input type="file" accept="image/*" onChange={handleFotoDokumen} className="input" />
             {dokumenPdf && (
-              <p className="mt-2 text-xs text-brand-green flex items-center gap-1">📄 {dokumenPdf.name}</p>
+              <div className="mt-2 flex items-center gap-3">
+                <img src={dokumenPdf.base64} alt={dokumenPdf.name} className="h-16 w-16 object-cover rounded-lg border border-brand-line" />
+                <span className="text-xs text-brand-muted">{dokumenPdf.name}</span>
+              </div>
             )}
           </Field>
           {fileError && <p className="text-xs text-red-600">{fileError}</p>}
