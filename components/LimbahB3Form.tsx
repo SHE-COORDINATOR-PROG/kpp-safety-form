@@ -47,6 +47,35 @@ export default function LimbahB3Form() {
   const [done, setDone] = useState<string | null>(null);
   const [error, setError] = useState("");
 
+  const MANUAL_OPTION = "__MANUAL__";
+  const [jumlahMode, setJumlahMode] = useState<"preset" | "manual">("preset");
+  const [manualAngka, setManualAngka] = useState("");
+  const [manualSatuan, setManualSatuan] = useState("Ton");
+
+  // Reset ke mode preset setiap kali jenis limbah berganti
+  // (opsi manual sebelumnya bisa jadi tidak relevan lagi untuk kategori baru).
+  useEffect(() => {
+    setJumlahMode("preset");
+    setManualAngka("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.kodeLimbah]);
+
+  function handleJumlahLimbahSelect(value: string) {
+    if (value === MANUAL_OPTION) {
+      setJumlahMode("manual");
+      set("jumlahLimbahKeluar", manualAngka ? `${manualAngka} ${manualSatuan}` : "");
+    } else {
+      setJumlahMode("preset");
+      set("jumlahLimbahKeluar", value);
+    }
+  }
+
+  function updateManual(angka: string, satuan: string) {
+    setManualAngka(angka);
+    setManualSatuan(satuan);
+    set("jumlahLimbahKeluar", angka ? `${angka} ${satuan}` : "");
+  }
+
   function set<K extends keyof typeof form>(key: K, val: (typeof form)[K]) {
     setForm((f) => ({ ...f, [key]: val }));
   }
@@ -146,9 +175,35 @@ export default function LimbahB3Form() {
             <input value="90 Hari" disabled className="input bg-gray-50 text-brand-muted" />
           </Field>
           <Field label="Jumlah Limbah yang Dikeluarkan" required>
-            <select value={form.jumlahLimbahKeluar} onChange={(e) => set("jumlahLimbahKeluar", e.target.value)} className="input">
+            <select
+              value={jumlahMode === "manual" ? MANUAL_OPTION : form.jumlahLimbahKeluar}
+              onChange={(e) => handleJumlahLimbahSelect(e.target.value)}
+              className="input"
+            >
               {jumlahLimbahOptions.map((v) => <option key={v}>{v}</option>)}
+              <option value={MANUAL_OPTION}>Lainnya (Input Manual)</option>
             </select>
+            {jumlahMode === "manual" && (
+              <div className="flex gap-2 mt-2">
+                <input
+                  type="number"
+                  step="0.001"
+                  min="0"
+                  required
+                  value={manualAngka}
+                  onChange={(e) => updateManual(e.target.value, manualSatuan)}
+                  placeholder="Contoh: 1,25"
+                  className="input flex-1"
+                />
+                <select
+                  value={manualSatuan}
+                  onChange={(e) => updateManual(manualAngka, e.target.value)}
+                  className="input w-28"
+                >
+                  {["Ton", "Kg", "Liter"].map((s) => <option key={s}>{s}</option>)}
+                </select>
+              </div>
+            )}
           </Field>
           <Field label="Jumlah Kemasan" required>
             <select value={form.jumlahKemasan} onChange={(e) => set("jumlahKemasan", e.target.value)} className="input">
