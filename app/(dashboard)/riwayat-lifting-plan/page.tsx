@@ -97,9 +97,11 @@ export default function RiwayatLiftingPlanPage() {
             td { border: 1px solid #000; padding: 4px 8px; font-size: 11.5px; vertical-align: top; }
             td.label { width: 38%; font-weight: bold; }
             td.value { color: #1a4fa0; font-weight: bold; }
-            img.foto { max-width: 220px; margin-top: 8px; border: 1px solid #ccc; }
+            img.foto { max-width: 100%; margin-top: 4px; border: 1px solid #ccc; }
             .badge { display:inline-block; padding:2px 10px; border-radius:999px; font-size:10.5px; background:#e8f8ee; color:#0f7a37; }
             .lampiran-title { font-weight: bold; margin-top: 16px; font-size: 12px; }
+            .lampiran-row { display: flex; gap: 16px; margin-top: 4px; }
+            .lampiran-col { flex: 1; min-width: 0; }
             .pdf-chip { display:inline-block; margin-top:6px; padding:4px 10px; border:1px solid #999; border-radius:6px; font-size:11px; }
             .approval-row { display: flex; justify-content: space-around; margin-top: 32px; text-align: center; }
             .approval-col { width: 40%; font-size: 11.5px; }
@@ -109,7 +111,7 @@ export default function RiwayatLiftingPlanPage() {
         <body>
           <div class="header">
             <img src="${origin}/logos/kpp-mining.png" />
-            <div class="company-name">KPP MINING</div>
+            <div class="company-name">PT KALIMANTAN PRIMA PERSADA</div>
             <div class="company-sub">Program Kerja Plant Safety</div>
           </div>
           <h1>PENGAJUAN LIFTING PLAN — ${plan.nomorPengajuan}</h1>
@@ -128,8 +130,20 @@ export default function RiwayatLiftingPlanPage() {
           </table>
 
           <div class="lampiran-title">LAMPIRAN :</div>
-          ${plan.fotoUnitBase64 ? `<p style="margin:6px 0 0; font-size:11px;">Foto Unit Alat Angkat:</p><img class="foto" src="${plan.fotoUnitBase64}" />` : `<p style="margin:6px 0 0; font-size:11px; color:#888;">Tidak ada foto unit yang diupload.</p>`}
-          ${plan.dokumenPdfBase64 ? `<p style="margin:10px 0 0; font-size:11px;">Foto Dokumen Pendukung:</p><img class="foto" src="${plan.dokumenPdfBase64}" />` : ""}
+          <div class="lampiran-row">
+            <div class="lampiran-col">
+              <p style="margin:6px 0 0; font-size:11px;">Foto Unit Alat Angkat:</p>
+              ${plan.fotoUnitBase64
+                ? `<img class="foto" src="${plan.fotoUnitBase64}" onerror="this.outerHTML='<p style=&quot;font-size:11px;color:#c00;&quot;>⚠ Foto gagal dimuat</p>'" />`
+                : `<p style="font-size:11px; color:#888;">Tidak ada foto yang diupload.</p>`}
+            </div>
+            <div class="lampiran-col">
+              <p style="margin:6px 0 0; font-size:11px;">Foto Dokumen Pendukung:</p>
+              ${plan.dokumenPdfBase64
+                ? `<img class="foto" src="${plan.dokumenPdfBase64}" onerror="this.outerHTML='<p style=&quot;font-size:11px;color:#c00;&quot;>⚠ Foto gagal dimuat</p>'" />`
+                : `<p style="font-size:11px; color:#888;">Tidak ada foto yang diupload.</p>`}
+            </div>
+          </div>
 
           <div class="approval-row">
             <div class="approval-col">
