@@ -2,12 +2,12 @@ import Link from "next/link";
 import { inspectionForms, categories } from "@/lib/inspectionForms";
 
 const kategoriColor: Record<string, string> = {
-  "Hand & Finger": "bg-brand-greenLight text-brand-greenDark",
+  "APD": "bg-brand-greenLight text-brand-greenDark",
   "Tools & Equipment": "bg-brand-blueLight text-blue-700",
   "Lifting & Rigging": "bg-brand-purpleLight text-purple-700",
   "Environment": "bg-brand-orangeLight text-orange-700",
   "Listrik & Las": "bg-teal-50 text-teal-700",
-  "Sertifikasi & Admin": "bg-yellow-50 text-yellow-700",
+  "Peralatan Emergency": "bg-yellow-50 text-yellow-700",
 };
 
 export default function FormInspeksiPage() {
