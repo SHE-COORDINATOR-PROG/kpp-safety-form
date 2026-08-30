@@ -122,7 +122,16 @@ model UploadedDocument {
   createdAt  DateTime @default(now())
 }
 
-// Form Pengajuan Pengambilan Limbah B3 dari TPS
+// Dokumen manifest limbah B3 (bukti serah terima resmi dari pihak pengangkut/pengolah)
+model ManifestB3 {
+  id            String   @id @default(cuid())
+  namaFile      String
+  fileBase64    String   @db.Text
+  nomorManifest String?
+  keterangan    String?
+  uploadedBy    String?
+  createdAt     DateTime @default(now())
+}
 model WasteB3Request {
   id                      String    @id @default(cuid())
   nomorForm               String    @unique
