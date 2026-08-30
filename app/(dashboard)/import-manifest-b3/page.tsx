@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { readManifestPdf } from "@/lib/pdfExtract";
 
 const MAX_FILE_MB = 3;
 
@@ -22,10 +23,13 @@ export default function ImportManifestB3Page() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [reading, setReading] = useState(false);
+  const [autoDetected, setAutoDetected] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function processFile(f: File | undefined) {
     setError("");
+    setAutoDetected(false);
     if (!f) return;
     if (f.type !== "application/pdf") {
       setError("File harus berformat PDF.");
@@ -37,6 +41,21 @@ export default function ImportManifestB3Page() {
     }
     const base64 = await fileToBase64(f);
     setFile({ name: f.name, base64 });
+
+    // Coba baca isi PDF-nya untuk menebak Nomor Manifest secara otomatis.
+    // Kalau gagal/tidak ketemu, tidak apa-apa — pengguna tetap bisa isi manual.
+    setReading(true);
+    try {
+      const result = await readManifestPdf(f);
+      if (result.nomorManifestGuess) {
+        setNomorManifest(result.nomorManifestGuess);
+        setAutoDetected(true);
+      }
+    } catch (err) {
+      console.error("Gagal membaca PDF:", err);
+    } finally {
+      setReading(false);
+    }
   }
 
   function handleDrop(e: React.DragEvent) {
@@ -130,7 +149,11 @@ export default function ImportManifestB3Page() {
             <div>
               <p className="text-3xl mb-2">📄</p>
               <p className="font-medium text-brand-ink">{file.name}</p>
-              <p className="text-xs text-brand-muted mt-1">Klik atau drag file lain untuk mengganti</p>
+              {reading ? (
+                <p className="text-xs text-brand-purple mt-1 animate-pulse">🔍 Membaca isi PDF untuk deteksi nomor manifest...</p>
+              ) : (
+                <p className="text-xs text-brand-muted mt-1">Klik atau drag file lain untuk mengganti</p>
+              )}
             </div>
           ) : (
             <div>
@@ -144,7 +167,17 @@ export default function ImportManifestB3Page() {
         <div className="card p-4 sm:p-5 space-y-3">
           <div>
             <label className="text-xs font-medium text-brand-muted">Nomor Manifest (opsional)</label>
-            <input value={nomorManifest} onChange={(e) => setNomorManifest(e.target.value)} className="input" />
+            <input
+              value={nomorManifest}
+              onChange={(e) => { setNomorManifest(e.target.value); setAutoDetected(false); }}
+              className="input"
+              placeholder="Akan terisi otomatis jika terdeteksi dari PDF"
+            />
+            {autoDetected && (
+              <p className="text-[11px] text-brand-green mt-1">
+                ✓ Terdeteksi otomatis dari isi PDF — silakan periksa & sesuaikan jika kurang tepat.
+              </p>
+            )}
           </div>
           <div>
             <label className="text-xs font-medium text-brand-muted">Keterangan (opsional)</label>
