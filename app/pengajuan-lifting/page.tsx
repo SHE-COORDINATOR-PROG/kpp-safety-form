@@ -2,7 +2,7 @@ import LiftingPlanForm from "@/components/LiftingPlanForm";
 import LogoRow from "@/components/LogoRow";
 
 export const metadata = {
-  title: "Pengajuan Lifting Plan — KPP Mining",
+  title: "Pengajuan Lifting Plan — PT Kalimantan Prima Persada",
 };
 
 export default function PengajuanLiftingPublicPage() {
