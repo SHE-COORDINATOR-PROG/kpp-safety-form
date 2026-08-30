@@ -55,9 +55,9 @@ export default function Sidebar() {
     <>
       {/* Mobile top bar — fixed di luar alur flex, supaya selalu full width */}
       <div className="lg:hidden fixed top-0 inset-x-0 z-40 bg-white border-b border-brand-line">
-        <div className="flex items-center justify-between px-4 py-2.5 gap-2">
-          <div className="flex flex-col gap-0.5 min-w-0">
-            <LogoRow size="h-6" />
+        <div className="flex items-center justify-between px-4 py-3 gap-2">
+          <div className="flex flex-col gap-1 min-w-0">
+            <LogoRow size="h-7" limit={1} />
             <p className="text-[10px] text-brand-muted leading-tight">Safety Dashboard</p>
           </div>
           <button
@@ -72,6 +72,9 @@ export default function Sidebar() {
         {/* Dropdown menu mobile — muncul di bawah header, hilang lagi setelah pilih menu */}
         {open && (
           <div className="border-t border-brand-line bg-white max-h-[75vh] overflow-y-auto shadow-lg">
+            <div className="px-4 pt-3">
+              <LogoRow size="h-6" />
+            </div>
             <NavList onItemClick={() => setOpen(false)} />
           </div>
         )}

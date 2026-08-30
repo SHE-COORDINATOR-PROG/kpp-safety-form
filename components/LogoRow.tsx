@@ -1,10 +1,11 @@
-export default function LogoRow({ size = "h-8" }: { size?: string }) {
-  const logos = [
+export default function LogoRow({ size = "h-8", limit }: { size?: string; limit?: number }) {
+  const allLogos = [
     { src: "/logos/kpp-mining.png", alt: "PT Kalimantan Prima Persada" },
     { src: "/logos/ciss.png", alt: "CISS" },
     { src: "/logos/asto.png", alt: "ASTO" },
     { src: "/logos/plant-asto.jpeg", alt: "Plant ASTO" },
   ];
+  const logos = limit ? allLogos.slice(0, limit) : allLogos;
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
