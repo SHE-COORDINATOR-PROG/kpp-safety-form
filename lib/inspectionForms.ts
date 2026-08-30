@@ -14,12 +14,12 @@ export type InspectionFormConfig = {
   slug: string;
   title: string;
   category:
-    | "Hand & Finger"
+    | "APD"
     | "Tools & Equipment"
     | "Lifting & Rigging"
     | "Environment"
     | "Listrik & Las"
-    | "Sertifikasi & Admin";
+    | "Peralatan Emergency";
   dasarHukum: string[];
   deskripsi: string;
   items: ChecklistItem[];
@@ -233,7 +233,7 @@ export const inspectionForms: InspectionFormConfig[] = [
   {
     slug: "apd-seragam",
     title: "Inspeksi APD dan Seragam Kerja",
-    category: "Hand & Finger",
+    category: "APD",
     dasarHukum: [UU_K3, "Permenaker No. 8 Tahun 2010 tentang Alat Pelindung Diri", SMK3],
     deskripsi: "Pemeriksaan kelengkapan dan kelayakan Alat Pelindung Diri serta seragam kerja karyawan.",
     items: [
@@ -284,7 +284,7 @@ export const inspectionForms: InspectionFormConfig[] = [
   {
     slug: "5r",
     title: "Inspeksi 5R (Ringkas, Rapi, Resik, Rawat, Rajin)",
-    category: "Sertifikasi & Admin",
+    category: "Peralatan Emergency",
     dasarHukum: [UU_K3, SMK3],
     deskripsi: "Audit penerapan budaya 5R (housekeeping) di area kerja sebagai bagian dari SMK3.",
     items: [
@@ -300,7 +300,7 @@ export const inspectionForms: InspectionFormConfig[] = [
   {
     slug: "peralatan-emergency",
     title: "Inspeksi Peralatan Emergency (P3K, APAR, Eyewash)",
-    category: "Sertifikasi & Admin",
+    category: "Peralatan Emergency",
     dasarHukum: [
       UU_K3,
       "Permenaker No. 15 Tahun 2008 tentang P3K di Tempat Kerja",
@@ -355,7 +355,7 @@ export const inspectionForms: InspectionFormConfig[] = [
   {
     slug: "lotto-emergency-stop",
     title: "Inspeksi Lotto & Emergency Stop Unit",
-    category: "Sertifikasi & Admin",
+    category: "Peralatan Emergency",
     dasarHukum: [UU_K3, "Permenaker No. 38 Tahun 2016 tentang K3 Pesawat Tenaga dan Produksi", SMK3],
     deskripsi: "Pemeriksaan kelengkapan Lock Out Tag Out (LOTO) dan fungsi tombol emergency stop pada unit/mesin.",
     items: [
@@ -375,10 +375,10 @@ export function getFormBySlug(slug: string) {
 }
 
 export const categories = [
-  "Hand & Finger",
+  "APD",
   "Tools & Equipment",
   "Lifting & Rigging",
   "Environment",
   "Listrik & Las",
-  "Sertifikasi & Admin",
+  "Peralatan Emergency",
 ] as const;
