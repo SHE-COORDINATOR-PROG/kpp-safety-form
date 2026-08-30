@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KPP Mining — Safety Dashboard",
+  title: "PT Kalimantan Prima Persada — Safety Dashboard",
   description: "Program Kerja Plant Safety & Form Inspeksi K3",
 };
 
