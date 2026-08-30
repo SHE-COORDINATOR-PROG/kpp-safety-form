@@ -104,7 +104,7 @@ export default function LiftingReportPage() {
         <body>
           <div class="header">
             <img src="${origin}/logos/kpp-mining.png" />
-            <div class="company-name">KPP MINING</div>
+            <div class="company-name">PT KALIMANTAN PRIMA PERSADA</div>
             <div class="company-sub">Program Kerja Plant Safety</div>
           </div>
           <h1>LIFTING REPORT — ${r.liftingPlan.nomorPengajuan}</h1>
