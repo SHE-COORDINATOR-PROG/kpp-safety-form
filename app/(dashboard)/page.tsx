@@ -8,12 +8,12 @@ import { getDashboardData } from "@/lib/dashboard";
 export const dynamic = "force-dynamic";
 
 const kategoriColor: Record<string, string> = {
-  "Hand & Finger": "#16a34a",
+  "APD": "#16a34a",
   "Tools & Equipment": "#3b82f6",
   "Lifting & Rigging": "#8b5cf6",
   "Environment": "#f97316",
   "Listrik & Las": "#14b8a6",
-  "Sertifikasi & Admin": "#f5b301",
+  "Peralatan Emergency": "#f5b301",
 };
 
 export default async function DashboardPage({
@@ -95,7 +95,7 @@ export default async function DashboardPage({
       <div className="grid lg:grid-cols-2 gap-4">
         <div className="card p-4 sm:p-5">
           <Bar3DChart
-            title="Pencapaian Inspeksi per Kategori (3D)"
+            title="Pencapaian Inspeksi per Kategori"
             data={data.perKategori.map((k) => ({
               label: k.kategori,
               sudahInspeksi: k.sudahInspeksi,
@@ -114,7 +114,7 @@ export default async function DashboardPage({
       <div className="grid lg:grid-cols-2 gap-4">
         <div className="card p-4 sm:p-5">
           <Bar3DChart
-            title="Pencapaian Inspeksi per Bulan (3D)"
+            title="Pencapaian Inspeksi per Bulan"
             data={data.perBulan.map((b) => ({
               label: b.bulan,
               sudahInspeksi: b.sudahInspeksi,
