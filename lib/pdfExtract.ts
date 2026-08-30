@@ -13,7 +13,7 @@ export type PdfReadResult = {
 };
 
 export async function readManifestPdf(file: File): Promise<PdfReadResult> {
-  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf");
+  const pdfjsLib = await import("pdfjs-dist");
   // Worker diambil dari CDN, versinya harus sama persis dengan versi
   // package.json ("pdfjs-dist": "3.11.174") supaya tidak error mismatch.
   (pdfjsLib as any).GlobalWorkerOptions.workerSrc =
