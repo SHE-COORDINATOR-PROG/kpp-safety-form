@@ -15,6 +15,8 @@ const menu = [
   { href: "/lifting-report", label: "Lifting Report", icon: "📄" },
   { href: "/pengajuan-limbah-b3", label: "Pengajuan Limbah B3", icon: "♻️" },
   { href: "/riwayat-limbah-b3", label: "Riwayat Limbah B3", icon: "🗂️" },
+  { href: "/import-manifest-b3", label: "Import Manifest B3", icon: "📥" },
+  { href: "/riwayat-manifest-b3", label: "Riwayat Manifest B3", icon: "🗃️" },
   { href: "/setting-target", label: "Setting Target", icon: "⚙️" },
 ];
 

@@ -1,6 +1,6 @@
 export default function LogoRow({ size = "h-8" }: { size?: string }) {
   const logos = [
-    { src: "/logos/kpp-mining.png", alt: "KPP Mining" },
+    { src: "/logos/kpp-mining.png", alt: "PT Kalimantan Prima Persada" },
     { src: "/logos/ciss.png", alt: "CISS" },
     { src: "/logos/asto.png", alt: "ASTO" },
     { src: "/logos/plant-asto.jpeg", alt: "Plant ASTO" },
