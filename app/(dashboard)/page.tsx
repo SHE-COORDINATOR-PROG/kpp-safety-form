@@ -3,7 +3,8 @@ import StatCard from "@/components/StatCard";
 import Bar3DChart from "@/components/Bar3DChart";
 import StatusDonut from "@/components/StatusDonut";
 import TrendChart from "@/components/TrendChart";
-import { getDashboardData } from "@/lib/dashboard";
+import ExportPptButton from "@/components/ExportPptButton";
+import { getDashboardData, bulanNameToIndex, namaBulan } from "@/lib/dashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,9 @@ export default async function DashboardPage({
   searchParams: { tahun?: string; bulan?: string };
 }) {
   const tahun = Number(searchParams.tahun) || new Date().getFullYear();
-  const data = await getDashboardData(tahun);
+  const bulanIndex = bulanNameToIndex(searchParams.bulan);
+  const data = await getDashboardData(tahun, bulanIndex);
+  const periodeLabel = bulanIndex !== null ? `${namaBulan[bulanIndex]} ${tahun}` : `Tahun ${tahun}`;
 
   const donutData = data.perKategori.map((k) => ({
     name: k.kategori,
@@ -37,9 +40,24 @@ export default async function DashboardPage({
           <span className="w-2.5 h-2.5 rounded-full bg-brand-green inline-block" />
           Program Kerja Plant Safety
         </h1>
-        <button className="text-sm bg-brand-green text-white px-4 py-2 rounded-lg font-medium">
-          ⟳ Sync
-        </button>
+        <div className="flex items-center gap-2">
+          <ExportPptButton
+            data={{
+              periodeLabel,
+              totalProgram: data.totalProgram,
+              programSelesai: data.programSelesai,
+              pencapaianPersen: data.pencapaianPersen,
+              totalInspeksi: data.totalInspeksi,
+              targetInspeksi: data.targetInspeksi,
+              totalLiftingPlan: data.totalLiftingPlan,
+              perKategori: data.perKategori,
+              kategoriColor,
+            }}
+          />
+          <button className="text-sm bg-brand-green text-white px-4 py-2 rounded-lg font-medium">
+            ⟳ Sync
+          </button>
+        </div>
       </div>
 
       <FilterBar />
@@ -87,7 +105,7 @@ export default async function DashboardPage({
           />
         </div>
         <p className="text-xs text-brand-muted mt-2">
-          Filter: Tahun {tahun} | Program: {data.programSelesai}/{data.totalProgram} | Inspeksi: {data.totalInspeksi}
+          Filter: {bulanIndex !== null ? `${searchParams.bulan} ` : ""}Tahun {tahun} | Program: {data.programSelesai}/{data.totalProgram} | Inspeksi: {data.totalInspeksi}
         </p>
       </div>
 
