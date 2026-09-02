@@ -131,11 +131,10 @@ export const inspectionForms: InspectionFormConfig[] = [
     items: [
       { no: 1, pertanyaan: "Kapasitas beban (rating) tertera jelas dan terbaca" },
       { no: 2, pertanyaan: "Tidak ada retak/deformasi pada rangka dan dudukan" },
-      { no: 3, pertanyaan: "Pin pengunci ketinggian berfungsi dan tidak aus" },
-      { no: 4, pertanyaan: "Base/kaki penopang stabil dan rata" },
-      { no: 5, pertanyaan: "Tidak ada karat berlebih yang mengurangi kekuatan" },
-      { no: 6, pertanyaan: "Digunakan sesuai kapasitas beban maksimum" },
-      { no: 7, pertanyaan: "Label inspeksi/tanggal riksa uji terakhir tersedia" },
+      { no: 3, pertanyaan: "Base/kaki penopang stabil dan rata" },
+      { no: 4, pertanyaan: "Tidak ada karat berlebih yang mengurangi kekuatan" },
+      { no: 5, pertanyaan: "Digunakan sesuai kapasitas beban maksimum" },
+      { no: 6, pertanyaan: "Label inspeksi/tanggal riksa uji terakhir tersedia" },
     ],
   },
   {
